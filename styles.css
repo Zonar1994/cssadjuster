@@ -36,7 +36,6 @@ body {
 
 #header h1 {
     font-size: 24px;
-    margin-right: 20px;
 }
 
 #header button {
@@ -45,18 +44,6 @@ body {
     color: white;
     cursor: pointer;
     font-size: 16px;
-    margin: 0 10px;
-}
-
-#undo-button {
-    background-color: #f44336;
-    color: white;
-    border-radius: 5px;
-    padding: 8px 12px;
-}
-
-#undo-button:hover {
-    background-color: #d32f2f;
 }
 
 /* Main Content */
@@ -65,6 +52,38 @@ body {
     display: flex;
     flex-direction: row;
     overflow: hidden;
+}
+
+/* Control Panel */
+#control-panel {
+    width: 300px;
+    background-color: #fff;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#control-panel button {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#undo-button {
+    background-color: #f44336;
+    color: white;
+}
+
+#undo-button:hover {
+    background-color: #d32f2f;
 }
 
 /* Web Viewer */
@@ -156,4 +175,30 @@ body {
     pointer-events: none;
     user-select: none;
     transition: filter 0.3s ease;
+}
+
+/* Footer */
+#footer {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 10px 20px;
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    #control-panel {
+        width: 200px;
+        padding: 15px;
+    }
+
+    #header h1 {
+        font-size: 20px;
+    }
+
+    #control-panel button {
+        font-size: 14px;
+        padding: 12px;
+    }
 }

@@ -7,6 +7,7 @@ const undoButton = document.getElementById('undo-button');
 const webViewer = document.getElementById('web-viewer');
 const transcriptionDisplay = document.getElementById('transcription');
 const appContainer = document.getElementById('app');
+const appTitle = document.getElementById('app-title'); // Added: Reference to the app title element
 
 // State
 let apiKey = localStorage.getItem('GROQ_API_KEY') || '';
@@ -55,6 +56,13 @@ apiKeyForm.addEventListener('submit', function(e) {
 
 openApiKeyButton.addEventListener('click', openApiKeyModal);
 undoButton.addEventListener('click', undoLastChange);
+appTitle.addEventListener('click', () => { // Added: Event listener to handle clicks on the app title
+    if (recognition && !isRecognizing) {
+        startRecognition();
+    } else if (isRecognizing) {
+        stopRecognition();
+    }
+});
 
 // Functions
 

@@ -138,13 +138,18 @@ if (SpeechRecognition) {
     alert('Your browser does not support the SpeechRecognition API.');
 }
 
-// Spacebar Event Handling
+// Spacebar and Volume Up Button Event Handling
 let spacePressed = false;
+let volumeUpPressed = false;
 
 document.addEventListener('keydown', function(event) {
     if (event.code === 'Space' && !spacePressed) {
         event.preventDefault();
         spacePressed = true;
+        startRecognition();
+    } else if (event.key === 'VolumeUp' && !volumeUpPressed) {
+        // Mobile device volume up button detected
+        volumeUpPressed = true;
         startRecognition();
     }
 });
@@ -153,6 +158,9 @@ document.addEventListener('keyup', function(event) {
     if (event.code === 'Space' && spacePressed) {
         event.preventDefault();
         spacePressed = false;
+        stopRecognition();
+    } else if (event.key === 'VolumeUp' && volumeUpPressed) {
+        volumeUpPressed = false;
         stopRecognition();
     }
 });

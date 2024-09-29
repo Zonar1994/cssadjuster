@@ -1,4 +1,5 @@
 // Elements
+const generateButton = document.getElementById('generate-button'); // Reference to the generate button
 const openApiKeyButton = document.getElementById('open-api-key-button');
 const apiKeyModal = document.getElementById('api-key-modal');
 const apiKeyForm = document.getElementById('api-key-form');
@@ -7,7 +8,7 @@ const undoButton = document.getElementById('undo-button');
 const webViewer = document.getElementById('web-viewer');
 const transcriptionDisplay = document.getElementById('transcription');
 const appContainer = document.getElementById('app');
-const appTitle = document.getElementById('app-title'); // Added: Reference to the app title element
+// Removed: loadingBar since it's no longer used
 
 // State
 let apiKey = localStorage.getItem('GROQ_API_KEY') || '';
@@ -56,10 +57,20 @@ apiKeyForm.addEventListener('submit', function(e) {
 
 openApiKeyButton.addEventListener('click', openApiKeyModal);
 undoButton.addEventListener('click', undoLastChange);
-appTitle.addEventListener('click', () => { // Added: Event listener to handle clicks on the app title
+
+// Generate Button Event Listeners for Press and Hold
+generateButton.addEventListener('mousedown', () => { // Press and hold start
     if (recognition && !isRecognizing) {
         startRecognition();
-    } else if (isRecognizing) {
+    }
+});
+generateButton.addEventListener('mouseup', () => { // Press and hold end
+    if (isRecognizing) {
+        stopRecognition();
+    }
+});
+generateButton.addEventListener('mouseleave', () => { // Handle if mouse leaves the button while holding
+    if (isRecognizing) {
         stopRecognition();
     }
 });
@@ -112,6 +123,7 @@ if (SpeechRecognition) {
     recognition.onstart = () => {
         isRecognizing = true;
         showTranscription('Listening...');
+        generateButton.classList.add('active'); // Add active class for glowing border
     };
 
     recognition.onresult = (event) => {
@@ -135,12 +147,14 @@ if (SpeechRecognition) {
     recognition.onerror = (event) => {
         console.error('Speech Recognition Error:', event.error);
         hideTranscription();
+        generateButton.classList.remove('active'); // Remove active class
         alert('Speech Recognition Error: ' + event.error);
     };
 
     recognition.onend = () => {
         isRecognizing = false;
         hideTranscription();
+        generateButton.classList.remove('active'); // Remove active class
     };
 } else {
     alert('Your browser does not support the SpeechRecognition API.');

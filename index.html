@@ -10,9 +10,31 @@
     <div id="app">
         <!-- Header -->
         <div id="header">
-            <h1 id="app-title" class="clickable-title">Component Generator</h1>
-            <button id="undo-button">↩️ Undo Last Change</button>
-            <button id="open-api-key-button" title="Enter or Update API Key">🔑 API Key</button>
+            <!-- Generate Button -->
+            <button id="generate-button" title="Generate Component" aria-label="Generate Component">
+                <svg xmlns="http://www.w3.org/2000/svg" class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v20"></path>
+                    <path d="M5 12h14"></path>
+                </svg>
+            </button>
+            
+            <!-- App Title (Optional: Remove if you want no text at all) -->
+            
+            <!-- Undo Button -->
+            <button id="undo-button" title="Undo Last Change" aria-label="Undo Last Change">
+                <svg xmlns="http://www.w3.org/2000/svg" class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="12 19 7 12 12 5"></polyline>
+                    <path d="M19 12a7 7 0 1 1-14 0"></path>
+                </svg>
+            </button>
+            
+            <!-- API Key Button -->
+            <button id="open-api-key-button" title="Enter or Update API Key" aria-label="Enter or Update API Key">
+                <svg xmlns="http://www.w3.org/2000/svg" class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <key></key>
+                    <path d="M18 8a6 6 0 0 0-12 0"></path>
+                </svg>
+            </button>
         </div>
 
         <!-- Main Content -->

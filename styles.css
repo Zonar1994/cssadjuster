@@ -57,35 +57,13 @@ body {
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
     position: relative;
     overflow: hidden;
+    font-size: 24px; /* Adjust font size for emoji */
 }
 
-.button-icon {
-    width: 24px;
-    height: 24px;
-    stroke: #ffffff;
-}
-
-/* Active State for Generate Button */
-#generate-button.active {
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.7), 
-                0 0 15px rgba(255, 127, 0, 0.7), 
-                0 0 15px rgba(255, 255, 0, 0.7),
-                0 0 15px rgba(0, 255, 0, 0.7),
-                0 0 15px rgba(0, 0, 255, 0.7),
-                0 0 15px rgba(75, 0, 130, 0.7),
-                0 0 15px rgba(143, 0, 255, 0.7);
-    animation: spin 2s linear infinite;
-    border: none; /* Ensure no border */
-}
-
-/* Spinning Animation */
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+#generate-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    background-color: #3700b3;
 }
 
 /* Generate Button Ripple Effect */
@@ -119,6 +97,28 @@ body {
     }
 }
 
+/* Active State for Generate Button */
+#generate-button.active {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.7), 
+                0 0 15px rgba(255, 127, 0, 0.7), 
+                0 0 15px rgba(255, 255, 0, 0.7),
+                0 0 15px rgba(0, 255, 0, 0.7),
+                0 0 15px rgba(0, 0, 255, 0.7),
+                0 0 15px rgba(75, 0, 130, 0.7),
+                0 0 15px rgba(143, 0, 255, 0.7);
+    animation: spin 2s linear infinite;
+    border: none; /* Ensure no border */
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 /* App Title */
 #app-title {
     flex: 1;
@@ -145,19 +145,17 @@ body {
     width: 50px;
     height: 50px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-size: 24px; /* Adjust font size for emojis */
 }
 
 #undo-button:hover, #open-api-key-button:hover {
     background-color: #6200ea;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    color: #ffffff; /* Change text color on hover */
 }
 
-#undo-button .button-icon, #open-api-key-button .button-icon {
-    stroke: #6200ea;
-}
-
-#undo-button:hover .button-icon, #open-api-key-button:hover .button-icon {
-    stroke: #ffffff;
+#undo-button:hover, #open-api-key-button:hover {
+    color: #ffffff; /* Ensure text color changes */
 }
 
 /* Main Content */
@@ -274,14 +272,10 @@ body {
         display: none; /* Hide title on smaller screens to save space */
     }
 
-    #undo-button, #open-api-key-button {
-        margin-left: 0;
-        /* Adjust size if necessary */
-    }
-
     #generate-button, #undo-button, #open-api-key-button {
         width: 40px;
         height: 40px;
+        font-size: 20px; /* Adjust font size for smaller screens */
     }
 
     #main {

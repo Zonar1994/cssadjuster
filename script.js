@@ -46,11 +46,18 @@ if (!apiKey) {
 // Event Listeners
 apiKeyForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    const key = apiKeyInput.value.trim();
+    let key = apiKeyInput.value.trim();
+
+    // Remove any non-ISO-8859-1 characters
+    key = key.replace(/[^\x00-\xFF]/g, '');
+
     if (key) {
         apiKey = key;
         localStorage.setItem('GROQ_API_KEY', apiKey);
         closeApiKeyModal();
+        alert('API Key saved successfully.');
+    } else {
+        alert('Invalid API Key. Please enter a valid key.');
     }
 });
 
@@ -214,13 +221,41 @@ async function processCommand(command) {
     await getLLMResponse(command);
 }
 
+// Function to validate API Key
+function isValidAPIKey(key) {
+    // Check if all characters are within ISO-8859-1 range (0-255)
+    for (let i = 0; i < key.length; i++) {
+        const code = key.charCodeAt(i);
+        if (code > 255) {
+            return false;
+        }
+    }
+    return true;
+}
+
 // Get LLM Response from Groq's Llama Model
 async function getLLMResponse(message) {
     try {
+        // Trim the API key
+        const trimmedApiKey = apiKey.trim();
+
+        // Validate the API key
+        if (!isValidAPIKey(trimmedApiKey)) {
+            alert('API Key contains invalid characters. Please check your key and try again.');
+            openApiKeyModal();
+            return;
+        }
+
         const payload = {
             messages: [
-                { role: "system", content: "You are an assistant that helps modify HTML, CSS, and JavaScript based on user voice commands. Respond only with the updated full HTML code, including all necessary CSS and JS, without any additional explanations." },
-                { role: "user", content: `Modify the following HTML code based on this command: "${message}"\n\nCurrent HTML Code:\n${currentHTML}` }
+                { 
+                    role: "system", 
+                    content: "You are an assistant that helps modify HTML, CSS, and JavaScript based on user voice commands. Respond only with the updated full HTML code, including all necessary CSS and JS, without any additional explanations." 
+                },
+                { 
+                    role: "user", 
+                    content: `Modify the following HTML code based on this command: "${message}"\n\nCurrent HTML Code:\n${currentHTML}` 
+                }
             ],
             model: "llama3-groq-70b-8192-tool-use-preview" // Ensure this model supports the required tasks
         };
@@ -229,7 +264,7 @@ async function getLLMResponse(message) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
+                'Authorization': `Bearer ${trimmedApiKey}`
             },
             body: JSON.stringify(payload)
         });

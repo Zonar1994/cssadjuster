@@ -23,10 +23,10 @@ body {
     width: 100%;
 }
 
-/* Header */
-#header {
-    position: fixed; /* Fix the header to the top */
-    top: 0;
+/* Footer (Previously Header) */
+#footer {
+    position: fixed; /* Fix the footer to the bottom */
+    bottom: 0;
     left: 0;
     width: 100%; /* Span the full width */
     background-color: #ffffff; /* Solid background to prevent content bleed */
@@ -35,11 +35,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    border-radius: 0; /* Remove border radius for fixed header */
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1); /* Shadow upwards */
+    border-radius: 0; /* Remove border radius for fixed footer */
     gap: 15px; /* Space between elements */
     flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    z-index: 1000; /* Ensure the header stays above other content */
+    z-index: 1000; /* Ensure the footer stays above other content */
 }
 
 /* Generate Button */
@@ -164,7 +164,8 @@ body {
     display: flex;
     flex-direction: row;
     overflow: hidden;
-    padding-top: 80px; /* Add padding to account for fixed header height */
+    padding-bottom: 80px; /* Add padding to account for fixed footer height */
+    /* Removed padding-top since footer is now at the bottom */
 }
 
 /* Web Viewer */
@@ -182,7 +183,7 @@ body {
 /* Transcription Display */
 #transcription {
     position: fixed;
-    top: 80px;
+    bottom: 90px; /* Position above the footer */
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.7);
@@ -260,7 +261,7 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    #header {
+    #footer {
         flex-direction: row; /* Keep elements in a row */
         justify-content: space-between; /* Distribute space */
         align-items: center;
@@ -279,10 +280,10 @@ body {
     }
 
     #main {
-        padding-top: 60px; /* Adjust padding for smaller header height */
+        padding-bottom: 60px; /* Adjust padding for smaller footer height */
     }
 
     #transcription {
-        top: 70px;
+        bottom: 70px; /* Adjust position above the footer */
     }
 }

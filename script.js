@@ -1,7 +1,7 @@
 // Elements
-const generateButton = document.getElementById('generate-button');
+const generateButton = document.getElementById('generate-button'); // Reference to the generate button
 const openApiKeyButton = document.getElementById('open-api-key-button');
-const clearButton = document.getElementById('clear-button');
+const clearButton = document.getElementById('clear-button'); // Reference to the clear button
 const apiKeyModal = document.getElementById('api-key-modal');
 const apiKeyForm = document.getElementById('api-key-form');
 const apiKeyInput = document.getElementById('api-key-input');
@@ -64,10 +64,14 @@ apiKeyForm.addEventListener('submit', function(e) {
 
 openApiKeyButton.addEventListener('click', openApiKeyModal);
 undoButton.addEventListener('click', undoLastChange);
-clearButton.addEventListener('click', clearEverything);
+clearButton.addEventListener('click', clearEverything); // Add event listener for clear button
 
 // Generate Button Event Listeners for Press and Hold
 // Handle both mouse and touch events
+let pressTimer;
+
+const PRESS_DURATION = 500; // milliseconds before recognizing as a press-and-hold
+
 generateButton.addEventListener('mousedown', startPress);
 generateButton.addEventListener('touchstart', startPress);
 
@@ -78,11 +82,22 @@ generateButton.addEventListener('touchcancel', cancelPress);
 
 function startPress(e) {
     e.preventDefault(); // Prevent default behavior like text selection or touch gestures
-    startRecognition();
+
+    // Start a timer to differentiate between tap and press-and-hold
+    pressTimer = setTimeout(() => {
+        if (recognition && !isRecognizing) {
+            startRecognition();
+        }
+    }, PRESS_DURATION);
 }
 
 function cancelPress(e) {
-    stopRecognition();
+    clearTimeout(pressTimer);
+
+    // If recognition is active, stop it and send transcription
+    if (isRecognizing) {
+        stopRecognition();
+    }
 }
 
 // Functions
@@ -153,7 +168,8 @@ function clearEverything() {
   </style>
 </head>
 <body>
-  
+  <h1>Welcome!</h1>
+  <p>Use voice commands to modify this page's style.</p>
 </body>
 </html>
         `;
@@ -164,7 +180,7 @@ function clearEverything() {
         // Optionally, clear localStorage if you want to remove the API key as well
         // localStorage.removeItem('GROQ_API_KEY');
 
-        // Removed the second alert
+        alert('All content has been cleared. You can start over.');
     }
 }
 
@@ -172,23 +188,22 @@ function clearEverything() {
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition;
 let isRecognizing = false;
-let finalTranscript = '';
 
 if (SpeechRecognition) {
     recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
     recognition.interimResults = true;
     recognition.maxAlternatives = 1;
-    recognition.continuous = true; // Keep recognition active
 
     recognition.onstart = () => {
         isRecognizing = true;
         showTranscription('Listening...');
-        generateButton.classList.add('active');
+        generateButton.classList.add('active'); // Add active class for glowing border
     };
 
     recognition.onresult = (event) => {
         let interimTranscript = '';
+        let finalTranscript = '';
         for (let i = event.resultIndex; i < event.results.length; ++i) {
             if (event.results[i].isFinal) {
                 finalTranscript += event.results[i][0].transcript;
@@ -196,55 +211,28 @@ if (SpeechRecognition) {
                 interimTranscript += event.results[i][0].transcript;
             }
         }
-        showTranscription(finalTranscript + ' ' + interimTranscript);
+        if (finalTranscript) {
+            hideTranscription();
+            processCommand(finalTranscript.trim());
+        } else {
+            showTranscription(interimTranscript.trim());
+        }
     };
 
     recognition.onerror = (event) => {
         console.error('Speech Recognition Error:', event.error);
         hideTranscription();
-        generateButton.classList.remove('active');
+        generateButton.classList.remove('active'); // Remove active class
         alert('Speech Recognition Error: ' + event.error);
     };
 
     recognition.onend = () => {
-        if (isRecognizing) {
-            try {
-                recognition.start(); // Restart recognition
-            } catch (error) {
-                console.error('Recognition Restart Error:', error);
-            }
-        } else {
-            hideTranscription();
-            generateButton.classList.remove('active');
-            if (finalTranscript.trim()) {
-                processCommand(finalTranscript.trim());
-            }
-            finalTranscript = '';
-        }
+        isRecognizing = false;
+        hideTranscription();
+        generateButton.classList.remove('active'); // Remove active class
     };
 } else {
     alert('Your browser does not support the SpeechRecognition API.');
-}
-
-// Start and Stop Recognition Functions
-function startRecognition() {
-    if (recognition && !isRecognizing) {
-        isRecognizing = true;
-        try {
-            recognition.start();
-            showTranscription('Listening...');
-            generateButton.classList.add('active');
-        } catch (error) {
-            console.error('Recognition Start Error:', error);
-        }
-    }
-}
-
-function stopRecognition() {
-    if (recognition && isRecognizing) {
-        isRecognizing = false;
-        recognition.stop();
-    }
 }
 
 // Process Command
@@ -347,4 +335,62 @@ function applyChange(newHTML) {
 
     // Update Web Viewer
     updateWebViewer();
+}
+
+// Clear Everything Functionality
+function clearEverything() {
+    if (confirm('Are you sure you want to clear everything and restart?')) {
+        // Clear the undo stack
+        undoStack = [];
+
+        // Reset currentHTML to initial state
+        currentHTML = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Live Preview</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #ffffff;
+      color: #000000;
+    }
+    h1 {
+      color: #4CAF50;
+    }
+  </style>
+</head>
+<body>
+
+</body>
+</html>
+        `;
+
+        // Update the web viewer
+        updateWebViewer();
+
+        // Optionally, clear localStorage if you want to remove the API key as well
+        // localStorage.removeItem('GROQ_API_KEY');
+
+        alert('All content has been cleared. You can start over.');
+    }
+}
+
+// Speech Recognition Control Functions
+function startRecognition() {
+    if (recognition && !isRecognizing) {
+        try {
+            recognition.start();
+        } catch (error) {
+            console.error('Recognition Start Error:', error);
+        }
+    }
+}
+
+function stopRecognition() {
+    if (recognition && isRecognizing) {
+        recognition.stop();
+    }
 }

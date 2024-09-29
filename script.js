@@ -65,21 +65,38 @@ openApiKeyButton.addEventListener('click', openApiKeyModal);
 undoButton.addEventListener('click', undoLastChange);
 
 // Generate Button Event Listeners for Press and Hold
-generateButton.addEventListener('mousedown', () => { // Press and hold start
-    if (recognition && !isRecognizing) {
-        startRecognition();
-    }
-});
-generateButton.addEventListener('mouseup', () => { // Press and hold end
+// Handle both mouse and touch events
+let pressTimer;
+
+const PRESS_DURATION = 500; // milliseconds before recognizing as a press-and-hold
+
+generateButton.addEventListener('mousedown', startPress);
+generateButton.addEventListener('touchstart', startPress);
+
+generateButton.addEventListener('mouseup', cancelPress);
+generateButton.addEventListener('mouseleave', cancelPress);
+generateButton.addEventListener('touchend', cancelPress);
+generateButton.addEventListener('touchcancel', cancelPress);
+
+function startPress(e) {
+    e.preventDefault(); // Prevent default behavior like text selection or touch gestures
+
+    // Start a timer to differentiate between tap and press-and-hold
+    pressTimer = setTimeout(() => {
+        if (recognition && !isRecognizing) {
+            startRecognition();
+        }
+    }, PRESS_DURATION);
+}
+
+function cancelPress(e) {
+    clearTimeout(pressTimer);
+
+    // If recognition is active, stop it and send transcription
     if (isRecognizing) {
         stopRecognition();
     }
-});
-generateButton.addEventListener('mouseleave', () => { // Handle if mouse leaves the button while holding
-    if (isRecognizing) {
-        stopRecognition();
-    }
-});
+}
 
 // Functions
 
@@ -164,49 +181,6 @@ if (SpeechRecognition) {
     };
 } else {
     alert('Your browser does not support the SpeechRecognition API.');
-}
-
-// Spacebar and Volume Up Button Event Handling
-let spacePressed = false;
-let volumeUpPressed = false;
-
-document.addEventListener('keydown', function(event) {
-    if (event.code === 'Space' && !spacePressed) {
-        event.preventDefault();
-        spacePressed = true;
-        startRecognition();
-    } else if (event.key === 'VolumeUp' && !volumeUpPressed) {
-        // Mobile device volume up button detected
-        volumeUpPressed = true;
-        startRecognition();
-    }
-});
-
-document.addEventListener('keyup', function(event) {
-    if (event.code === 'Space' && spacePressed) {
-        event.preventDefault();
-        spacePressed = false;
-        stopRecognition();
-    } else if (event.key === 'VolumeUp' && volumeUpPressed) {
-        volumeUpPressed = false;
-        stopRecognition();
-    }
-});
-
-function startRecognition() {
-    if (recognition && !isRecognizing) {
-        try {
-            recognition.start();
-        } catch (error) {
-            console.error('Recognition Start Error:', error);
-        }
-    }
-}
-
-function stopRecognition() {
-    if (recognition && isRecognizing) {
-        recognition.stop();
-    }
 }
 
 // Process Command
@@ -309,4 +283,21 @@ function applyChange(newHTML) {
 
     // Update Web Viewer
     updateWebViewer();
+}
+
+// Speech Recognition Control Functions
+function startRecognition() {
+    if (recognition && !isRecognizing) {
+        try {
+            recognition.start();
+        } catch (error) {
+            console.error('Recognition Start Error:', error);
+        }
+    }
+}
+
+function stopRecognition() {
+    if (recognition && isRecognizing) {
+        recognition.stop();
+    }
 }

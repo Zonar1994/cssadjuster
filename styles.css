@@ -42,6 +42,14 @@ body {
     z-index: 1000; /* Ensure the footer stays above other content */
 }
 
+/* Prevent Text Selection on Buttons */
+button {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard */
+    touch-action: manipulation; /* Prevent double-tap zoom and other touch actions */
+}
+
 /* Generate Button */
 #generate-button {
     width: 50px;
@@ -152,10 +160,6 @@ body {
     background-color: #6200ea;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     color: #ffffff; /* Change text color on hover */
-}
-
-#undo-button:hover, #open-api-key-button:hover {
-    color: #ffffff; /* Ensure text color changes */
 }
 
 /* Main Content */

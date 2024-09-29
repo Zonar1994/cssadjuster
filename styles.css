@@ -23,7 +23,7 @@ body {
     width: 100%;
 }
 
-/* Footer (Previously Header) */
+/* Footer */
 #footer {
     position: fixed; /* Fix the footer to the bottom */
     bottom: 0;
@@ -139,7 +139,7 @@ button {
     text-overflow: ellipsis; /* Add ellipsis if text is too long */
 }
 
-/* Undo and API Key Buttons */
+/* Undo, API Key, and Clear Buttons */
 #undo-button, #open-api-key-button, #clear-button {
     background-color: #ffffff;
     border: 2px solid #6200ea;

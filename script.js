@@ -8,7 +8,6 @@ const undoButton = document.getElementById('undo-button');
 const webViewer = document.getElementById('web-viewer');
 const transcriptionDisplay = document.getElementById('transcription');
 const appContainer = document.getElementById('app');
-// Removed: loadingBar since it's no longer used
 
 // State
 let apiKey = localStorage.getItem('GROQ_API_KEY') || '';

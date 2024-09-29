@@ -9,7 +9,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f0f2f5;
     transition: background-color 0.3s ease;
-    overflow: hidden;
+    overflow-x: hidden; /* Prevent horizontal scroll */
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -25,17 +25,21 @@ body {
 
 /* Header */
 #header {
-    position: relative;
-    background-color: #ffffff;
+    position: fixed; /* Fix the header to the top */
+    top: 0;
+    left: 0;
+    width: 100%; /* Span the full width */
+    background-color: #ffffff; /* Solid background to prevent content bleed */
     color: #333333;
-    padding: 15px 20px;
-    padding-bottom: 22px;
+    padding: 10px 20px;
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    border: 4px solid transparent; /* Static transparent border */
-    border-radius: 8px;
-    overflow: hidden;
+    border-radius: 0; /* Remove border radius for fixed header */
+    gap: 15px; /* Space between elements */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    z-index: 1000; /* Ensure the header stays above other content */
 }
 
 /* Generate Button */
@@ -49,25 +53,42 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
     position: relative;
     overflow: hidden;
 }
 
-#generate-button .button-icon {
+.button-icon {
     width: 24px;
     height: 24px;
     stroke: #ffffff;
 }
 
-#generate-button:active {
-    transform: scale(0.95);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    background-color: #3700b3;
+/* Active State for Generate Button */
+#generate-button.active {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.7), 
+                0 0 15px rgba(255, 127, 0, 0.7), 
+                0 0 15px rgba(255, 255, 0, 0.7),
+                0 0 15px rgba(0, 255, 0, 0.7),
+                0 0 15px rgba(0, 0, 255, 0.7),
+                0 0 15px rgba(75, 0, 130, 0.7),
+                0 0 15px rgba(143, 0, 255, 0.7);
+    animation: spin 2s linear infinite;
+    border: none; /* Ensure no border */
 }
 
-/* Ripple Effect */
+/* Spinning Animation */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Generate Button Ripple Effect */
 #generate-button::after {
     content: "";
     position: absolute;
@@ -84,7 +105,7 @@ body {
 
 #generate-button:active::after {
     opacity: 1;
-    animation: ripple 0.2s linear;
+    animation: ripple 0.6s linear;
 }
 
 @keyframes ripple {
@@ -98,27 +119,6 @@ body {
     }
 }
 
-/* Active State for Generate Button */
-#generate-button.active {
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.7), 
-                0 0 15px rgba(255, 127, 0, 0.7), 
-                0 0 15px rgba(255, 255, 0, 0.7),
-                0 0 15px rgba(0, 255, 0, 0.7),
-                0 0 15px rgba(0, 0, 255, 0.7),
-                0 0 15px rgba(75, 0, 130, 0.7),
-                0 0 15px rgba(143, 0, 255, 0.7);
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
 /* App Title */
 #app-title {
     flex: 1;
@@ -126,16 +126,18 @@ body {
     font-size: 24px;
     color: #6200ea;
     user-select: none;
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow on small screens */
+    text-overflow: ellipsis; /* Add ellipsis if text is too long */
 }
 
-/* Undo Button */
-#undo-button {
+/* Undo and API Key Buttons */
+#undo-button, #open-api-key-button {
     background-color: #ffffff;
     border: 2px solid #6200ea;
     border-radius: 8px;
     cursor: pointer;
     padding: 8px;
-    margin-left: 15px;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     align-items: center;
@@ -145,50 +147,16 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-#undo-button:hover {
+#undo-button:hover, #open-api-key-button:hover {
     background-color: #6200ea;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
-#undo-button .button-icon {
-    width: 24px;
-    height: 24px;
+#undo-button .button-icon, #open-api-key-button .button-icon {
     stroke: #6200ea;
 }
 
-#undo-button:hover .button-icon {
-    stroke: #ffffff;
-}
-
-/* API Key Button */
-#open-api-key-button {
-    background-color: #ffffff;
-    border: 2px solid #6200ea;
-    border-radius: 8px;
-    cursor: pointer;
-    padding: 8px;
-    margin-left: 15px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-#open-api-key-button:hover {
-    background-color: #6200ea;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-#open-api-key-button .button-icon {
-    width: 24px;
-    height: 24px;
-    stroke: #6200ea;
-}
-
-#open-api-key-button:hover .button-icon {
+#undo-button:hover .button-icon, #open-api-key-button:hover .button-icon {
     stroke: #ffffff;
 }
 
@@ -198,6 +166,7 @@ body {
     display: flex;
     flex-direction: row;
     overflow: hidden;
+    padding-top: 80px; /* Add padding to account for fixed header height */
 }
 
 /* Web Viewer */
@@ -285,7 +254,7 @@ body {
 
 /* Blurred Background when Modal is Open */
 .blurred {
-    filter: blur(2px);
+    filter: blur(5px);
     pointer-events: none;
     user-select: none;
     transition: filter 0.3s ease;
@@ -294,31 +263,32 @@ body {
 /* Responsive Design */
 @media (max-width: 768px) {
     #header {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row; /* Keep elements in a row */
+        justify-content: space-between; /* Distribute space */
+        align-items: center;
+        padding: 10px;
+        gap: 10px;
     }
 
     #app-title {
-        text-align: left;
-        margin-top: 10px;
+        display: none; /* Hide title on smaller screens to save space */
     }
 
     #undo-button, #open-api-key-button {
         margin-left: 0;
-        margin-top: 10px;
+        /* Adjust size if necessary */
     }
 
-    #control-panel {
-        width: 200px;
-        padding: 15px;
+    #generate-button, #undo-button, #open-api-key-button {
+        width: 40px;
+        height: 40px;
     }
 
-    #header h1 {
-        font-size: 20px;
+    #main {
+        padding-top: 60px; /* Adjust padding for smaller header height */
     }
 
-    #control-panel button {
-        font-size: 14px;
-        padding: 12px;
+    #transcription {
+        top: 70px;
     }
 }

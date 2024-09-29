@@ -428,7 +428,7 @@ async function getLLMResponse(message) {
         },
         {
           role: 'user',
-          content: `Modify the following HTML code based on this command and also add the FULL message as comments in your code: "${message}"\n\nCurrent HTML Code,please do not change anything about the code, only when user asks, make sure to add when users wants to add and just adjust when user wants to adjust:\n${currentHTML}`,
+          content: `Modify the following HTML code based on this command and also add the FULL message as comments in your code: "${message}"\n\nCurrent HTML Code:\n${currentHTML}`,
         },
       ],
       model: 'llama3-groq-70b-8192-tool-use-preview',

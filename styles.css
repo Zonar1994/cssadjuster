@@ -140,7 +140,7 @@ button {
 }
 
 /* Undo and API Key Buttons */
-#undo-button, #open-api-key-button {
+#undo-button, #open-api-key-button, #clear-button {
     background-color: #ffffff;
     border: 2px solid #6200ea;
     border-radius: 8px;
@@ -156,7 +156,7 @@ button {
     font-size: 24px; /* Adjust font size for emojis */
 }
 
-#undo-button:hover, #open-api-key-button:hover {
+#undo-button:hover, #open-api-key-button:hover, #clear-button:hover {
     background-color: #6200ea;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     color: #ffffff; /* Change text color on hover */
@@ -277,7 +277,7 @@ button {
         display: none; /* Hide title on smaller screens to save space */
     }
 
-    #generate-button, #undo-button, #open-api-key-button {
+    #generate-button, #undo-button, #open-api-key-button, #clear-button {
         width: 40px;
         height: 40px;
         font-size: 20px; /* Adjust font size for smaller screens */

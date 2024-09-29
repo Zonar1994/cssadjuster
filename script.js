@@ -1,6 +1,7 @@
 // Elements
 const generateButton = document.getElementById('generate-button'); // Reference to the generate button
 const openApiKeyButton = document.getElementById('open-api-key-button');
+const clearButton = document.getElementById('clear-button'); // Reference to the clear button
 const apiKeyModal = document.getElementById('api-key-modal');
 const apiKeyForm = document.getElementById('api-key-form');
 const apiKeyInput = document.getElementById('api-key-input');
@@ -63,6 +64,7 @@ apiKeyForm.addEventListener('submit', function(e) {
 
 openApiKeyButton.addEventListener('click', openApiKeyModal);
 undoButton.addEventListener('click', undoLastChange);
+clearButton.addEventListener('click', clearEverything); // Add event listener for clear button
 
 // Generate Button Event Listeners for Press and Hold
 // Handle both mouse and touch events
@@ -121,6 +123,14 @@ function hideTranscription() {
 
 function updateWebViewer() {
     webViewer.srcdoc = currentHTML;
+    // Scroll the iframe to the top after content is loaded
+    webViewer.onload = () => {
+        try {
+            webViewer.contentWindow.scrollTo(0, 0);
+        } catch (error) {
+            console.error('Unable to scroll iframe:', error);
+        }
+    };
 }
 
 function undoLastChange() {
@@ -130,6 +140,48 @@ function undoLastChange() {
     }
     currentHTML = undoStack.pop();
     updateWebViewer();
+}
+
+// Clear Everything Functionality
+function clearEverything() {
+    if (confirm('Are you sure you want to clear everything and restart?')) {
+        // Clear the undo stack
+        undoStack = [];
+
+        // Reset currentHTML to initial state
+        currentHTML = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Live Preview</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #ffffff;
+      color: #000000;
+    }
+    h1 {
+      color: #4CAF50;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome!</h1>
+  <p>Use voice commands to modify this page's style.</p>
+</body>
+</html>
+        `;
+
+        // Update the web viewer
+        updateWebViewer();
+
+        // Optionally, clear localStorage if you want to remove the API key as well
+        // localStorage.removeItem('GROQ_API_KEY');
+
+        alert('All content has been cleared. You can start over.');
+    }
 }
 
 // Speech Recognition Setup
@@ -283,6 +335,47 @@ function applyChange(newHTML) {
 
     // Update Web Viewer
     updateWebViewer();
+}
+
+// Clear Everything Functionality
+function clearEverything() {
+    if (confirm('Are you sure you want to clear everything and restart?')) {
+        // Clear the undo stack
+        undoStack = [];
+
+        // Reset currentHTML to initial state
+        currentHTML = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Live Preview</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #ffffff;
+      color: #000000;
+    }
+    h1 {
+      color: #4CAF50;
+    }
+  </style>
+</head>
+<body>
+
+</body>
+</html>
+        `;
+
+        // Update the web viewer
+        updateWebViewer();
+
+        // Optionally, clear localStorage if you want to remove the API key as well
+        // localStorage.removeItem('GROQ_API_KEY');
+
+        alert('All content has been cleared. You can start over.');
+    }
 }
 
 // Speech Recognition Control Functions

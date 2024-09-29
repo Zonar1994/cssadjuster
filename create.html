@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Component Generator - Create Project</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Creation Page -->
+        <div id="creation-page" class="page">
+            <!-- Header with Home Button -->
+            <header>
+                <button id="home-button" title="Home" aria-label="Home">
+                    🏠
+                </button>
+                <h1 id="current-project-title" contenteditable="false">New Project</h1>
+            </header>
+
+            <!-- Main Content -->
+            <div id="main">
+                <!-- Web Viewer -->
+                <div id="web-viewer-container">
+                    <iframe id="web-viewer" sandbox="allow-scripts allow-same-origin"></iframe>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div id="footer">
+                <!-- Generate Button -->
+                <button id="generate-button" title="Generate Component" aria-label="Generate Component">
+                    ➕
+                </button>
+                
+                <!-- Undo Button -->
+                <button id="undo-button" title="Undo Last Change" aria-label="Undo Last Change">
+                    ↩️
+                </button>
+                
+                <!-- API Key Button -->
+                <button id="open-api-key-button" title="Enter or Update API Key" aria-label="Enter or Update API Key">
+                    🔑
+                </button>
+
+                <!-- Clear Everything Button -->
+                <button id="clear-button" title="Clear Everything" aria-label="Clear Everything">
+                    🗑️
+                </button>
+
+                <!-- Projects Drop-down Button -->
+                <div class="dropdown">
+                    <button id="projects-dropdown-button" title="Select Project" aria-label="Select Project">
+                        📂
+                    </button>
+                    <div id="projects-dropdown-menu" class="dropdown-content">
+                        <ul id="dropdown-project-list">
+                            <!-- Projects will be dynamically populated here -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transcription Display -->
+    <div id="transcription">Transcribing...</div>
+
+    <!-- API Key Modal -->
+    <div id="api-key-modal" class="modal">
+        <div class="modal-content">
+            <h2>Enter Groq API Key</h2>
+            <form id="api-key-form">
+                <input type="password" id="api-key-input" placeholder="Your API Key" required />
+                <button type="submit">Save Key</button>
+            </form>
+            <div id="api-key-status" class="status"></div> <!-- For animation/status messages -->
+        </div>
+    </div>
+
+    <!-- Success Notification -->
+    <div id="notification" class="success"></div>
+
+    <!-- Include JavaScript Files -->
+    <script src="apiKeyManager.js"></script>
+    <script src="create.js"></script>
+    <script src="speechRecognition.js"></script>
+    <script src="titleGenerator.js"></script>
+    <script src="projectManager.js"></script>
+    <script src="download.js"></script>
+    <script src="animations.js"></script>
+</body>
+</html>

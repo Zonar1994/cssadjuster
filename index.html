@@ -2,59 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Component Generator</title>
+    <title>Component Generator - Home</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="app">
-        <!-- Main Content -->
-        <div id="main">
-            <!-- Web Viewer -->
-            <div id="web-viewer-container">
-                <iframe id="web-viewer" sandbox="allow-scripts allow-same-origin"></iframe>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div id="footer">
-            <!-- Generate Button -->
-            <button id="generate-button" title="Generate Component" aria-label="Generate Component">
-                ➕
-            </button>
-            
-            <!-- App Title -->
-            <h1 id="app-title">Component Generator</h1>
-            
-            <!-- Undo Button -->
-            <button id="undo-button" title="Undo Last Change" aria-label="Undo Last Change">
-                ↩️
-            </button>
-            
-            <!-- API Key Button -->
-            <button id="open-api-key-button" title="Enter or Update API Key" aria-label="Enter or Update API Key">
-                🔑
-            </button>
-
-            <!-- Clear Everything Button -->
-            <button id="clear-button" title="Clear Everything" aria-label="Clear Everything">
-                🗑️
-            </button>
+        <!-- Home Page -->
+        <div id="home-page" class="page">
+            <h1>Your Projects</h1>
+            <ul id="project-list">
+                <!-- Projects will be dynamically populated here -->
+            </ul>
+            <button id="new-project-button" class="primary-button">+ New Project</button>
         </div>
     </div>
-
-    <!-- Transcription Display -->
-    <div id="transcription">Transcribing...</div>
 
     <!-- API Key Modal -->
-    <div id="api-key-modal" style="display: none;">
-        <form id="api-key-form">
+    <div id="api-key-modal" class="modal">
+        <div class="modal-content">
             <h2>Enter Groq API Key</h2>
-            <input type="password" id="api-key-input" placeholder="Your API Key" required />
-            <button type="submit">Save Key</button>
-        </form>
+            <form id="api-key-form">
+                <input type="password" id="api-key-input" placeholder="Your API Key" required />
+                <button type="submit">Save Key</button>
+            </form>
+            <div id="api-key-status" class="status"></div> <!-- For animation/status messages -->
+        </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Include JavaScript Files -->
+    <script src="apiKeyManager.js"></script>
+    <script src="home.js"></script>
 </body>
 </html>

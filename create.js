@@ -431,7 +431,7 @@ async function getLLMResponse(message) {
           content: `Modify the following HTML code based on this command and also add the FULL message as comments in your code: "${message}"\n\nCurrent HTML Code:\n${currentHTML}`,
         },
       ],
-      model: 'llama-3.3-70b-versatile',
+      model: 'mixtral-8x7b-32768',
     };
 
     const response = await fetch(
